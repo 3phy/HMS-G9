@@ -97,7 +97,7 @@
                                             <tr>
                                                 <th>#</th>
                                                 <th data-toggle="true">Name</th>
-                                                <th data-hide="phone">Number</th>
+                                                <th data-hide="phone">ID</th>
                                                 <th data-hide="phone">Email</th>
                                                 <th data-hide="phone">Action</th>
                                             </tr>
@@ -125,9 +125,9 @@
                                                     <td><?php echo $row->doc_email;?></td>
                                                     
                                                     <td>
-                                                        <a href="his_admin_manage_employee.php?delete=<?php echo $row->doc_id;?>" 
-                                                            class="badge badge-danger" 
-                                                            onclick="return confirm('Are you sure you want to fire this employee?');">
+                                                        <a href="his_admin_manage_employee.php?delete=<?php echo $row->doc_id;?>"
+                                                            class="badge badge-danger"
+                                                            onclick="return confirmDeleteEmployee('<?php echo addslashes($row->doc_fname . ' ' . $row->doc_lname); ?>');">
                                                             <i class="mdi mdi-trash-can-outline"></i> Delete
                                                         </a>
                                                         <a href="his_admin_view_single_employee.php?doc_id=<?php echo $row->doc_id;?>&&doc_number=<?php echo $row->doc_number;?>" class="badge badge-success"><i class="mdi mdi-eye"></i> View</a>
@@ -135,6 +135,12 @@
                                                     </td>
                                                 </tr>
                                                 </tbody>
+                                            <script>
+                                            function confirmDeleteEmployee(name) {
+                                                return confirm('Are you sure you want to fire employee "' + name + '"? This action cannot be undone.');
+                                            }
+                                            
+                                            </script>
                                             <?php  $cnt = $cnt +1 ; }?>
                                             <tfoot>
                                             <tr class="active">
@@ -146,8 +152,14 @@
                                             </tr>
                                             </tfoot>
                                         </table>
+
                                     </div> <!-- end .table-responsive-->
                                 </div> <!-- end card-box -->
+                                <div class="mt-3">
+    <a href="his_admin_print_all_employee.php" target="_blank" class="btn btn-primary">
+        <i class="mdi mdi-printer"></i> Print Records
+    </a>
+</div>
                             </div> <!-- end col -->
                         </div>
                         <!-- end row -->

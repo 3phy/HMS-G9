@@ -79,7 +79,7 @@
                                             <tr>
                                                 <th>#</th>
                                                 <th data-toggle="true">Name</th>
-                                                <th data-hide="phone">Number</th>
+                                                <th data-hide="phone">ID</th>
                                                 <th data-hide="phone">Email</th>
                                                 <th data-hide="phone">Action</th>
                                             </tr>

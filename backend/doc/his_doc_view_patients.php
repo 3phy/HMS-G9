@@ -3,7 +3,7 @@
   include('assets/inc/config.php');
   include('assets/inc/checklogin.php');
   check_login();
-  $aid=$_SESSION['ad_id'];
+  $aid = isset($_SESSION['ad_id']) ? $_SESSION['ad_id'] : null;
 
   // Handle consultation submission if POST request
   if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_consultation'])) {
@@ -147,7 +147,7 @@
                                                 <td><?php echo $row->pat_age;?> Years</td>
                                                 <td><?php echo $row->pat_type;?></td>
                                                 <td>
-                                                    <a href="his_admin_view_single_patient.php?pat_id=<?php echo $row->pat_id;?>&&pat_number=<?php echo $row->pat_number;?>" class="badge badge-success"><i class="mdi mdi-eye"></i> View</a>
+                                                    <a href="his_doc_view_single_patient.php?pat_id=<?php echo $row->pat_id;?>&&pat_number=<?php echo $row->pat_number;?>" class="badge badge-success"><i class="mdi mdi-eye"></i> View</a>
                                                     <!-- Button trigger modal -->
                                                     <button type="button" class="badge badge-primary border-0" data-toggle="modal" data-target="#consultModal<?php echo $row->pat_id;?>">
                                                         <i class="mdi mdi-plus"></i> Consult
@@ -177,13 +177,26 @@
                                                                 <label>Checklist</label><br>    
                                                                 <label><input type="checkbox" name="consult_checklist[]" value="X-ray"> X-ray</label><br>
                                                                 <label><input type="checkbox" name="consult_checklist[]" value="Blood Test"> Blood Test</label><br>
-                                                                <label><input type="checkbox" name="consult_checklist[]" value="ECG"> ECG</label><br>
                                                                 <label>
-                                                                    <input type="checkbox" id="other_check_<?php echo $row->pat_id;?>" onclick="toggleOtherInput<?php echo $row->pat_id;?>()">
-                                                                    Other
+                                                                    <input type="checkbox" id="custom_check_<?php echo $row->pat_id;?>" onclick="toggleCustomInput<?php echo $row->pat_id;?>()">
+                                                                    Other (Use a comma '<b style="font-size: 45px;">,</b>' to separate multiple entries)
                                                                 </label>
-                                                                <input type="text" name="consult_checklist[]" id="other_input_<?php echo $row->pat_id;?>" class="form-control mt-2" style="display:none;" placeholder="Specify other..." autocomplete="off">
+                                                                <input type="text" name="consult_checklist[]" id="custom_input_<?php echo $row->pat_id;?>" class="form-control mt-2" style="display:none;" placeholder="Enter custom..." autocomplete="off">
                                                             </div>
+                                                            <script>
+                                                                function toggleOtherInput<?php echo $row->pat_id;?>() {
+                                                                    var check = document.getElementById('other_check_<?php echo $row->pat_id;?>');
+                                                                    var input = document.getElementById('other_input_<?php echo $row->pat_id;?>');
+                                                                    input.style.display = check.checked ? 'block' : 'none';
+                                                                    if (!check.checked) input.value = '';
+                                                                }
+                                                                function toggleCustomInput<?php echo $row->pat_id;?>() {
+                                                                    var check = document.getElementById('custom_check_<?php echo $row->pat_id;?>');
+                                                                    var input = document.getElementById('custom_input_<?php echo $row->pat_id;?>');
+                                                                    input.style.display = check.checked ? 'block' : 'none';
+                                                                    if (!check.checked) input.value = '';
+                                                                }
+                                                            </script>
                                                             <script>
                                                                 function toggleOtherInput<?php echo $row->pat_id;?>() {
                                                                     var check = document.getElementById('other_check_<?php echo $row->pat_id;?>');
@@ -260,4 +273,3 @@
 
 </body>
 </html>
-                                    

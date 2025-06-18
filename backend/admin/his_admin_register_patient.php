@@ -16,18 +16,21 @@
             $pat_dept = $_POST['pat_dept'];
             $ref_unit = $_POST['ref_unit'];
             $pat_treatment = $_POST['pat_treatment'];
+            $pat_gender = $_POST['pat_gender'];
+            $pat_date_reg = date('Y-m-d H:i:s');
+            
 
             //sql to insert captured values
 			$query="INSERT INTO his_patients (
     pat_fname, pat_condition, pat_lname, pat_age, pat_dob, pat_number, pat_phone, 
-    pat_type, pat_addr, pat_dept, ref_unit, pat_treatment
-) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    pat_type, pat_addr, pat_dept, ref_unit, pat_treatment, pat_gender, pat_date_reg
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
 
 $stmt = $mysqli->prepare($query);
 $rc = $stmt->bind_param(
-    'ssssssssssss',
+    'ssssssssssssss',
     $pat_fname, $pat_condition, $pat_lname, $pat_age, $pat_dob, $pat_number,
-    $pat_phone, $pat_type, $pat_addr, $pat_dept, $ref_unit, $pat_treatment
+    $pat_phone, $pat_type, $pat_addr, $pat_dept, $ref_unit, $pat_treatment, $pat_gender, $pat_date_reg
 );
 
             $stmt->execute();
@@ -114,10 +117,44 @@ $rc = $stmt->bind_param(
 
                                             <div class="form-row">
                                                 <div class="form-group col-md-6">
-                                                    <label for="inputEmail4" class="col-form-label">Date Of Birth</label>
-                                                    <input type="text" required="required" name="pat_dob" class="form-control" id="inputEmail4" placeholder="DD/MM/YYYY">
+                                                    <label for="pat_dob" class="col-form-label">Date Of Birth</label>
+                                                    <div class="input-group">
+                                                        <input type="text" required="required" name="pat_dob" class="form-control" id="pat_dob" placeholder="DD/MM/YYYY" autocomplete="off">
+                                                        <div class="input-group-append">
+                                                        
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div class="form-group col-md-6">
+                                                <script>
+                                                document.addEventListener('DOMContentLoaded', function() {
+                                                    var dobInput = document.getElementById('pat_dob');
+                                                    var calendarBtn = document.getElementById('dob_calendar_btn');
+                                                    // Use browser datepicker if available
+                                                    dobInput.type = 'date';
+                                                    dobInput.placeholder = 'YYYY-MM-DD';
+                                                    calendarBtn.addEventListener('click', function() {
+                                                        dobInput.focus();
+                                                        dobInput.showPicker && dobInput.showPicker();
+                                                    });
+                                                    // Optional: convert value to DD/MM/YYYY on blur
+                                                    dobInput.addEventListener('blur', function() {
+                                                        var val = dobInput.value;
+                                                        if(val && /^\d{4}-\d{2}-\d{2}$/.test(val)) {
+                                                            var parts = val.split('-');
+                                                            dobInput.value = parts[2] + '/' + parts[1] + '/' + parts[0];
+                                                        }
+                                                    });
+                                                    // Optional: convert back to YYYY-MM-DD on focus
+                                                    dobInput.addEventListener('focus', function() {
+                                                        var val = dobInput.value;
+                                                        if(val && /^\d{2}\/\d{2}\/\d{4}$/.test(val)) {
+                                                            var parts = val.split('/');
+                                                            dobInput.value = parts[2] + '-' + parts[1] + '-' + parts[0];
+                                                        }
+                                                    });
+                                                });
+                                                </script>
+                                                <div class="form-group col-md-3">
                                                     <label for="pat_age" class="col-form-label">Age</label>
                                                     <input required="required" type="text" name="pat_age" class="form-control" id="pat_age" placeholder="Patient's Age" readonly>
                                                 </div>
@@ -127,12 +164,12 @@ $rc = $stmt->bind_param(
                                                     var ageInput = document.getElementById('pat_age');
                                                     dobInput.addEventListener('change', function() {
                                                         var dob = dobInput.value;
-                                                        // Expecting format DD/MM/YYYY
-                                                        var parts = dob.split('/');
+                                                        // Expecting format YYYY-MM-DD
+                                                        var parts = dob.split('-');
                                                         if(parts.length === 3) {
-                                                            var year = parseInt(parts[2], 10);
+                                                            var year = parseInt(parts[0], 10);
                                                             var month = parseInt(parts[1], 10) - 1; // JS months 0-based
-                                                            var day = parseInt(parts[0], 10);
+                                                            var day = parseInt(parts[2], 10);
                                                             var birthDate = new Date(year, month, day);
                                                             var today = new Date();
                                                             var age = today.getFullYear() - birthDate.getFullYear();
@@ -167,6 +204,14 @@ $rc = $stmt->bind_param(
         <label for="inputCity" class="col-form-label">Patient Condition</label> <!-- changed label -->
         <input required="required" type="text" name="pat_condition" class="form-control" id="inputCity"> <!-- changed name -->
     </div>
+    <div class="form-group col-md-4">
+        <label for="inputCity" class="col-form-label">Gender</label> <!-- changed label -->
+        <select required="required" name="pat_gender" class="form-control" id="pat_gender">
+            <option value="" disabled selected>Select Gender</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+    </div>
     <input type="hidden" name="pat_type" value="Active">
 
     <div class="form-group col-md-12">
@@ -197,52 +242,9 @@ $rc = $stmt->bind_param(
     <input type="text" name="pat_number" value="<?php echo $patient_number;?>" class="form-control" id="inputZip">
 </div>
 
-
-                                            <button type="submit" name="add_patient" class="ladda-button btn btn-primary" data-style="expand-right">Add Patient</button>
-
-                                        </form>
-                                        <!--End Patient Form-->
-                                    </div> <!-- end card-body -->
-                                </div> <!-- end card-->
-                            </div> <!-- end col -->
-                        </div>
-                        <!-- end row -->
-
-                    </div> <!-- container -->
-
-                </div> <!-- content -->
-
-                <!-- Footer Start -->
-                <?php include('assets/inc/footer.php');?>
-                <!-- end Footer -->
-
-            </div>
-
-            <!-- ============================================================== -->
-            <!-- End Page content -->
-            <!-- ============================================================== -->
-
-
-        </div>
-        <!-- END wrapper -->
-
-       
-        <!-- Right bar overlay-->
-        <div class="rightbar-overlay"></div>
-
-        <!-- Vendor js -->
-        <script src="assets/js/vendor.min.js"></script>
-
-        <!-- App js-->
-        <script src="assets/js/app.min.js"></script>
-
-        <!-- Loading buttons js -->
-        <script src="assets/libs/ladda/spin.js"></script>
-        <script src="assets/libs/ladda/ladda.js"></script>
-
-        <!-- Buttons init js-->
-        <script src="assets/js/pages/loading-btn.init.js"></script>
-        
-    </body>
-
-</html>
+<?php
+    // Get the current date and time in Y-m-d H:i:s format
+    $pat_date_reg = date('Y-m-d H:i:s');
+?>
+<input type="hidden" name="pat_date_reg" value="<?php echo $pat_date_reg; ?>">
+<button type="submit" name="add_patient" class="ladda-button btn btn-primary" data-style="expand-right">Add Patient</button>

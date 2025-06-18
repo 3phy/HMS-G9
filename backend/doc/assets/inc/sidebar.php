@@ -34,9 +34,7 @@
                                         <a href="his_doc_manage_patient.php">Manage Patients</a>
                                     </li>
                                     <hr>
-                                    <li>
-                                        <a href="his_doc_patient_transfer.php">Patient Transfers</a>
-                                    </li>
+                                    
                                 </ul>
                             </li>   
 

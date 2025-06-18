@@ -91,7 +91,7 @@
                                                 *get details of allpatients
                                                 *
                                             */
-                                                $ret="SELECT * FROM  his_patients WHERE pat_type = 'OutPatient' ORDER BY RAND() "; 
+                                                $ret="SELECT * FROM  his_patients WHERE pat_type = 'Discharge' ORDER BY RAND() "; 
                                                 //sql code to get to ten docs  randomly
                                                 $stmt= $mysqli->prepare($ret) ;
                                                 $stmt->execute() ;//ok

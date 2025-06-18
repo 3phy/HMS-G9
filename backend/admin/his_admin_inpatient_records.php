@@ -111,8 +111,11 @@
                                                     <td><?php echo $row->pat_phone;?></td>
                                                     <td><?php echo $row->pat_age;?> Years</td>
                                                     <td><?php echo isset($row->pat_type) ? $row->pat_type : ''; ?></td>
-                                                    <td><a href="his_admin_view_single_patient.php?pat_id=<?php echo $row->pat_id;?>&&pat_number=<?php echo $row->pat_number;?>" class="badge badge-success"><i class="mdi mdi-eye"></i> View</a></td>
-                                                </tr>
+                                                    <td>
+                                                        <a href="his_admin_print_single_inpatient.php?pat_id=<?php echo $row->pat_id;?>&pat_number=<?php echo $row->pat_number;?>" target="_blank" class="btn btn-primary btn-sm">
+                                                            <i class="mdi mdi-printer"></i> Print
+                                                        </a>
+                                                    </td></tr>
                                                 </tbody>
                                             <?php  $cnt = $cnt +1 ; }?>
                                             <tfoot>

@@ -90,18 +90,18 @@
                                 <div class="text-center w-75 m-auto">
                                     <a href="index.php">
                                         <span>
-                                            <a href="/Patient-sus/index.php">
+                                            <a href="/HMS/index.php">
                                                 <img src="assets/images/logo-dark.png" alt="" height="22">
                                             </a>
                                         </span>
                                     </a>
-                                    <p class="text-muted mb-4 mt-3">Enter your email address and password to access Doctor panel.</p>
+                                    <p class="text-muted mb-4 mt-3">Enter your Doctor ID and Password to access Doctor panel.</p>
                                 </div>
 
                                 <form method='post' >
 
                                     <div class="form-group mb-3">
-                                        <label for="emailaddress">Doctor Number</label>
+                                        <label for="emailaddress">Doctor ID</label>
                                         <input class="form-control" name="doc_number" type="text" id="emailaddress" required="" placeholder="Enter your doctor number">
                                     </div>
 

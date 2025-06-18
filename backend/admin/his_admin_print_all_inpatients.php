@@ -19,16 +19,16 @@ check_login();
 <body>
     <h2>All Active/Inactive Patient Records</h2>
     <hr>
-    <table class="table table-bordered" style="border:2px solid #333;">
+    <table class="table table-bordered" style="border-collapse:collapse; border:2px solidrgb(0, 0, 0);">
         <thead>
-            <tr>
-                <th style="border:1px solid #333;">#</th>
-                <th style="border:1px solid #333;">Patient Name</th>
-                <th style="border:1px solid #333;">Patient Number</th>
-                <th style="border:1px solid #333;">Patient Address</th>
-                <th style="border:1px solid #333;">Patient Phone</th>
-                <th style="border:1px solid #333;">Patient Age</th>
-                <th style="border:1px solid #333;">Patient Type</th>
+            <tr style="background-color:#D9EAD3;">
+                <th style="border:2px solid; padding:8px;">#</th>
+                <th style="border:2px solid; padding:8px;">Patient Name</th>
+                <th style="border:2px solid; padding:8px;">Patient Number</th>
+                <th style="border:2px solid; padding:8px;">Patient Address</th>
+                <th style="border:2px solid; padding:8px;">Patient Phone</th>
+                <th style="border:2px solid; padding:8px;">Patient Age</th>
+                <th style="border:2px solid; padding:8px;">Patient Type</th>
             </tr>
         </thead>
         <tbody>
@@ -39,14 +39,14 @@ check_login();
             $res=$stmt->get_result();
             $cnt=1;
             while($row=$res->fetch_object()) {
-                echo "<tr>";
-                echo "<td style='border:1px solid #333;'>{$cnt}</td>";
-                echo "<td style='border:1px solid #333;'>{$row->pat_fname} {$row->pat_lname}</td>";
-                echo "<td style='border:1px solid #333;'>{$row->pat_number}</td>";
-                echo "<td style='border:1px solid #333;'>{$row->pat_addr}</td>";
-                echo "<td style='border:1px solid #333;'>{$row->pat_phone}</td>";
-                echo "<td style='border:1px solid #333;'>{$row->pat_age} Years</td>";
-                echo "<td style='border:1px solid #333;'>{$row->pat_type}</td>";
+                echo "<tr style='background-color:#D9EAD3;'>";
+                echo "<td style='border:2px solid; padding:8px;'>{$cnt}</td>";
+                echo "<td style='border:2px solid; padding:8px;'>{$row->pat_fname} {$row->pat_lname}</td>";
+                echo "<td style='border:2px solid; padding:8px;'>{$row->pat_number}</td>";
+                echo "<td style='border:2px solid; padding:8px;'>{$row->pat_addr}</td>";
+                echo "<td style='border:2px solid; padding:8px;'>{$row->pat_phone}</td>";
+                echo "<td style='border:2px solid; padding:8px;'>{$row->pat_age} Years</td>";
+                echo "<td style='border:2px solid; padding:8px;'>{$row->pat_type}</td>";
                 echo "</tr>";
                 $cnt++;
             }

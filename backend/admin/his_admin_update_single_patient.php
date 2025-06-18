@@ -2,41 +2,38 @@
 <?php
 	session_start();
 	include('assets/inc/config.php');
-		if(isset($_POST['update_patient']))
-		{
-            $pat_id = $_GET['pat_id'];
-			$pat_fname=$_POST['pat_fname'];
-			$pat_lname=$_POST['pat_lname'];
-			$pat_number=$_POST['pat_number'];
-            $pat_phone=$_POST['pat_phone'];
-            $pat_type=$_POST['pat_type'];
-            $pat_addr=$_POST['pat_addr'];
-            $pat_age = $_POST['pat_age'];
-            $pat_dob = $_POST['pat_dob'];
-            $pat_condition = $_POST['pat_condition'];
-            $pat_dept = $_POST['pat_dept'];
-            $ref_unit = $_POST['ref_unit'];
-            $pat_treatment = $_POST['pat_treatment'];
-            //sql to insert captured values
-			$query="UPDATE  his_patients  SET pat_fname=?, pat_lname=?, pat_age=?, pat_dob=?, pat_number=?, pat_phone=?, pat_type=?, pat_addr=?, pat_condition=?, pat_dept=?,pat_treatment=?,ref_unit=? WHERE pat_id = ?";
-			$stmt = $mysqli->prepare($query);
-			$rc=$stmt->bind_param('sssssssssisss', $pat_fname, $pat_lname, $pat_age, $pat_dob, $pat_number, $pat_phone, $pat_type, $pat_addr, $pat_condition, $pat_id,$pat_dept,$pat_treatment,$ref_unit);
-			$stmt->execute();
-			/*
-			*Use Sweet Alerts Instead Of This Fucked Up Javascript Alerts
-			*echo"<script>alert('Successfully Created Account Proceed To Log In ');</script>";
-			*/ 
-			//declare a varible which will be passed to alert function
-			if($stmt)
-			{
-				$success = "Patient Details Updated";
-			}
-			else {
-				$err = "Please Try Again Or Try Later";
-			}
-			
-			
-		}
+		if (isset($_POST['update_patient'])) {
+    $pat_fname = $_POST['pat_fname'];
+    $pat_lname = $_POST['pat_lname'];
+    $pat_gender = $_POST['pat_gender'];
+    $pat_dob = $_POST['pat_dob'];
+    $pat_age = $_POST['pat_age'];
+    $pat_phone = $_POST['pat_phone'];
+    $pat_condition = $_POST['pat_condition'];
+    $pat_type = $_POST['pat_type'];
+    $pat_treatment = $_POST['pat_treatment'];
+    $ref_unit = $_POST['ref_unit'];
+    $pat_dept = $_POST['pat_dept'];
+    $pat_number = $_GET['pat_number']; // or hidden input
+
+    $query = "UPDATE his_patients SET 
+        pat_fname=?, pat_lname=?, pat_gender=?, pat_dob=?, pat_age=?, pat_phone=?,
+        pat_condition=?, pat_type=?, pat_treatment=?, ref_unit=?, pat_dept=?
+        WHERE pat_number=?";
+
+    $stmt = $mysqli->prepare($query);
+    $stmt->bind_param(
+        'ssssssssssss',
+        $pat_fname, $pat_lname, $pat_gender, $pat_dob, $pat_age, $pat_phone,
+        $pat_condition, $pat_type, $pat_treatment, $ref_unit, $pat_dept, $pat_number
+    );
+
+    if ($stmt->execute()) {
+        $success = "Patient details updated successfully!";
+    } else {
+        $err = "Failed to update patient details. Please try again.";
+    }
+}
 ?>
 <!--End Server Side-->
 <!--End Patient Registration-->
@@ -105,31 +102,73 @@
                                         <!--Add Patient Form-->
                                         <form method="post">
                                             <div class="form-row">
-                                                <div class="form-group col-md-6">
+                                                <div class="form-group col-md-5">
                                                     <label for="inputEmail4" class="col-form-label">First Name</label>
                                                     <input type="text" required="required" value="<?php echo $row->pat_fname;?>" name="pat_fname" class="form-control" id="inputEmail4" placeholder="Patient's First Name">
                                                 </div>
-                                                <div class="form-group col-md-6">
+                                                <div class="form-group col-md-5">
                                                     <label for="inputPassword4" class="col-form-label">Last Name</label>
                                                     <input required="required" type="text" value="<?php echo $row->pat_lname;?>" name="pat_lname" class="form-control"  id="inputPassword4" placeholder="Patient`s Last Name">
                                                 </div>
                                             </div>
 
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <label for="inputEmail4" class="col-form-label">Date Of Birth</label>
-                                                    <input type="text" required="required" value="<?php echo $row->pat_dob;?>" name="pat_dob" class="form-control" id="inputEmail4" placeholder="DD/MM/YYYY">
-                                                </div>
-                                                <div class="form-group col-md-6">
-                                                    <label for="inputPassword4" class="col-form-label">Age</label>
-                                                    <input required="required" type="text" value="<?php echo $row->pat_age;?>" name="pat_age" class="form-control"  id="inputPassword4" placeholder="Patient`s Age">
-                                                </div>
-                                            </div>
+<div class="form-row">
+    <div class="form-group col-md-4">
+        <label for="inputCity" class="col-form-label">Gender</label>
+        <select required="required" name="pat_gender" class="form-control" id="pat_gender">
+            <option value="" disabled>Select Gender</option>
+            <option value="Male" <?php echo ($row->pat_gender == 'Male') ? 'selected' : ''; ?>>Male</option>
+            <option value="Female" <?php echo ($row->pat_gender == 'Female') ? 'selected' : ''; ?>>Female</option>
+        </select>
+    </div>
+    <div class="form-group col-md-3">
+        <label for="pat_dob" class="col-form-label">Date Of Birth</label>
+        <div class="input-group">
+            <input type="date" required="required" name="pat_dob" class="form-control" id="pat_dob" 
+                value="<?php echo $row->pat_dob; ?>" placeholder="YYYY-MM-DD">
+            <div class="input-group-append">
+            </div>
+        </div>
+    </div>
+    <div class="form-group col-md-3">
+        <label for="pat_age" class="col-form-label">Age</label>
+        <input type="number" name="pat_age" class="form-control" id="pat_age"
+            value="<?php echo $row->pat_age; ?>" required="required" min="0">
+    </div>
+</div>
 
-                                            <div class="form-group">
-                                                <label for="inputAddress" class="col-form-label">Address</label>
-                                                <input required="required" type="text" value="<?php echo $row->pat_addr;?>" class="form-control" name="pat_addr" id="inputAddress" placeholder="Patient's Addresss">
-                                            </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var dobInput = document.querySelector('input[name="pat_dob"]');
+    var ageInput = document.getElementById('pat_age');
+    dobInput.addEventListener('change', function() {
+        var dob = dobInput.value;
+        // Expecting format YYYY-MM-DD
+        var parts = dob.split('-');
+        if(parts.length === 3) {
+            var year = parseInt(parts[0], 10);
+            var month = parseInt(parts[1], 10) - 1; // JS months 0-based
+            var day = parseInt(parts[2], 10);
+            var birthDate = new Date(year, month, day);
+            var today = new Date();
+            var age = today.getFullYear() - birthDate.getFullYear();
+            var m = today.getMonth() - birthDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            if(!isNaN(age) && age >= 0) {
+                ageInput.value = age;
+            } else {
+                ageInput.value = '';
+            }
+        } else {
+            ageInput.value = '';
+        }
+    });
+});
+</script>
+
+                                            
 
                                             <div class="form-row">
                                                 <div class="form-group col-md-4">
@@ -140,28 +179,22 @@
                                                     <label for="inputCity" class="col-form-label">Patient Condition</label>
                                                     <input required="required" type="text" value="<?php echo $row->pat_condition;?>" name="pat_condition" class="form-control" id="inputCity">
                                                 </div>
+                                                
                                                 <div class="form-group col-md-4">
                                                     <label for="inputState" class="col-form-label">Patient's Type</label>
                                                     <select id="inputState" required="required" name="pat_type" class="form-control">
-                                                        <option>Choose</option>
-                                                        <option>Active</option>
-                                                        <option>Inactive</option>
-                                                        <option>Discharge</option>
+                                                        <option value="" disabled selected>Choose</option>
+                                                        <option value="Active" <?php echo ($row->pat_type == 'Active') ? 'selected' : ''; ?>>Active</option>
+<option value="Inactive" <?php echo ($row->pat_type == 'Inactive') ? 'selected' : ''; ?>>Inactive</option>
+<option value="Discharge" <?php echo ($row->pat_type == 'Discharge') ? 'selected' : ''; ?>>Discharge</option>
+
                                                     </select>
                                                 </div>
-    <div class="form-group col-md-12">
+                                                   <div class="form-group col-md-12">
         <label for="pat_treatment" class="col-form-label">Treatment</label>
         <textarea name="pat_treatment" class="form-control" placeholder="Treatment details" rows="3"><?php echo isset($row->pat_treatment) ? $row->pat_treatment : ''; ?></textarea>
     </div>
-
-                                                <div class="form-group col-md-2" style="display:none">
-                                                    <?php 
-                                                        $length = 5;    
-                                                        $patient_number =  substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'),1,$length);
-                                                    ?>
-                                                    <label for="inputZip" class="col-form-label">Patient Number</label>
-                                                    <input type="text" name="pat_number" value="<?php echo $patient_number;?>" class="form-control" id="inputZip">
-                                                </div>
+                                            
                                             </div>
                                             <div class="form-row">
     <div class="form-group col-md-6">
@@ -171,7 +204,6 @@
     <div class="form-group col-md-6">
         <label for="pat_dept" class="col-form-label">Patient Department</label>
         <input required="required" type="text" name="pat_dept" class="form-control" placeholder="e.g., Orthopedic Department" value="<?php echo isset($row->pat_dept) ? $row->pat_dept : ''; ?>">
-    </div>
     </div>
                                             <button type="submit" name="update_patient" class="ladda-button btn btn-success" data-style="expand-right">Update Patient</button>
 
@@ -187,10 +219,6 @@
                     </div> <!-- container -->
 
                 </div> <!-- content -->
-
-                <!-- Footer Start -->
-                <?php include('assets/inc/footer.php');?>
-                <!-- end Footer -->
 
             </div>
 

@@ -34,9 +34,7 @@
                                         <a href="his_admin_manage_patient.php">Manage Patients</a>
                                     </li>
                                     <hr>
-                                    <li>
-                                        <a href="his_admin_patient_transfer.php">Patient Transfers</a>
-                                    </li>
+                                    
                                 </ul>
                             </li>
 
@@ -64,7 +62,7 @@
                             <li>
                                 <a href="javascript: void(0);">
                                     <i class="fe-share"></i>
-                                    <span> Reporting </span>
+                                    <span> Print Patient Reports</span>
                                     <span class="menu-arrow"></span>
                                 </a>
                                 <ul class="nav-second-level" aria-expanded="false">
